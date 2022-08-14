@@ -25,6 +25,7 @@ const CustomCursor = styled.div`
     width:50px;
     height:50px;
     color:white;
+    font-size: 25px;
     font-weight: bolder;
     padding:20px;
     border:1px solid red;
@@ -34,6 +35,10 @@ const CustomCursor = styled.div`
     top:0; left:0;
     z-index:20000;
     pointer-events: none;
+
+    & > div{
+        margin-top: -3px;
+    }
 `;
 
 const LocationPointer = styled.div`
@@ -72,7 +77,7 @@ export default function Image({displayCursor, cursorState}){
     return (
         <CustomMain onMouseEnter={cursorState} onMouseLeave={cursorState}>
             <FindImage onMouseMove={moveCursor} className="findPicture" src={findPicture} alt="find-character"/>
-            <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}>+</CustomCursor>
+            <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
             <LocationPointer>+</LocationPointer>
         </CustomMain>
     )
