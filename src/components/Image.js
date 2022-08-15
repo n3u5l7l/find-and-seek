@@ -65,6 +65,7 @@ export default function Image({displayCursor, cursorState}){
     const [cursorPos, setCursorPos] = useState([]);
     const imageRef = useRef(null);
     const locationRef = useRef(null);
+    const characterOptionRef = useRef(null);
 
     function moveCursor (event){
         const x = event.pageX;
@@ -81,19 +82,18 @@ export default function Image({displayCursor, cursorState}){
     function displayOption (event){
         const x = event.pageX;
         const y = event.pageY + 10;
-        //document.querySelector(".character-option").style.display="flex";
-        //document.querySelector(".character-option-pointer").style.display="flex";
-        //document.querySelector(".character-option-pointer").style.transform = `translate(calc(${x}px - 50%), calc(${e.pageY}px - 60px))`;
 
-        /* if(x + 30 >= imageRef.clientWidth){
-            document.querySelector(".character-option").style.transform = `translate(calc(${x}px - 150%), calc(${y}px - 50%))`;
-        }else if (x - 30 <= 0){
-            document.querySelector(".character-option").style.transform = `translate(calc(${x}px + 40%), calc(${y}px - 50%))`;
-        }else{
-            document.querySelector(".character-option").style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
-        } */
+        characterOptionRef.current.style.display="flex";
         locationRef.current.style.display="flex";
-        locationRef.current.style.transform=`translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50px))`
+        locationRef.current.style.transform=`translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50px))`;
+
+         if(x + 30 >= imageRef.current.clientWidth){
+            characterOptionRef.current.style.transform = `translate(calc(${x}px - 150%), calc(${y}px - 50%))`;
+        }else if (x - 30 <= 0){
+            characterOptionRef.current.style.transform = `translate(calc(${x}px + 40%), calc(${y}px - 50%))`;
+        }else{
+            characterOptionRef.current.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+        } 
     }
     
     let cursorDisplay = displayCursor ? "flex" : "none";
@@ -103,7 +103,7 @@ export default function Image({displayCursor, cursorState}){
             <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={findPicture} alt="find-character"/>
             <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
             <LocationPointer ref={locationRef}><div>+</div></LocationPointer>
-            <CharacterOption/>
+            <CharacterOption ref={characterOptionRef}/>
         </CustomMain>
     )
 }

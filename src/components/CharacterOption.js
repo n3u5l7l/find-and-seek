@@ -1,20 +1,23 @@
 import styled from "styled-components"
-
+import { forwardRef } from "react";
 const CharacterList = styled.div`
     position: absolute;
     top:0; left:0;
     color: black;
+    width: max-content;
     z-index:1;
     display:none;
     flex-direction: column;
     background-color: bisque;
     font-weight: bolder;
+    margin-top:20px;
 
     & > .close{
         position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
+        width:20px;
         font-size: 15px;
         top:0; left:100%;
         background-color: black;
@@ -30,7 +33,8 @@ const CharacterList = styled.div`
     }
 
     & > .character{
-        border:2px scrollbar-width;
+        border:2px solid;
+        width:100%;
         border-radius: 5px;
         padding:5px;
         justify-content: center;
@@ -44,15 +48,16 @@ const CharacterList = styled.div`
     }
 `;
 
-export default function CharacterOption(){
-    
+const characterArr = ["Ash", "Tom", "Crocodie"];
 
+const CharacterOption = (props, ref) => {
+   // let displayOption = props.showOption ? "flex" : "none";
 
     return(
-        <CharacterList style={{}}>
-            <div className="close"></div>
-            <div className="character">Ash</div>
-            <div className="character">Tom</div>
+        <CharacterList ref={ref}>
+            <div className="close">❌</div>
+            {characterArr.map((chars, index) => <div className="character" key={index}>{chars}</div>)}
         </CharacterList>
     )
 }
+export default forwardRef(CharacterOption);
