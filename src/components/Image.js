@@ -1,7 +1,9 @@
 import findPicture from "../assets/egor-klyuchnyk-full-x-season-web.jpg";
+import CharacterOption from "./CharacterOption";
 import "styled-components";
 import styled from "styled-components";
 import { useState } from "react";
+import { useRef } from "react";
 
 const CustomMain = styled.main`
     position: relative;
@@ -53,12 +55,16 @@ const LocationPointer = styled.div`
     background-color: red;
     border-radius: 50%;
     color:white;
+    
+    & > div{
+        margin-top: -6.5px;
+    }
 `;
 
-const CharacterOption = styled.div`
-`
 export default function Image({displayCursor, cursorState}){
     const [cursorPos, setCursorPos] = useState([]);
+    const imageRef = useRef(null);
+    const locationRef = useRef(null);
 
     function moveCursor (event){
         const x = event.pageX;
@@ -71,14 +77,33 @@ export default function Image({displayCursor, cursorState}){
         
         setCursorPos([curX, curY]);
     }
+
+    function displayOption (event){
+        const x = event.pageX;
+        const y = event.pageY + 10;
+        //document.querySelector(".character-option").style.display="flex";
+        //document.querySelector(".character-option-pointer").style.display="flex";
+        //document.querySelector(".character-option-pointer").style.transform = `translate(calc(${x}px - 50%), calc(${e.pageY}px - 60px))`;
+
+        /* if(x + 30 >= imageRef.clientWidth){
+            document.querySelector(".character-option").style.transform = `translate(calc(${x}px - 150%), calc(${y}px - 50%))`;
+        }else if (x - 30 <= 0){
+            document.querySelector(".character-option").style.transform = `translate(calc(${x}px + 40%), calc(${y}px - 50%))`;
+        }else{
+            document.querySelector(".character-option").style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+        } */
+        locationRef.current.style.display="flex";
+        locationRef.current.style.transform=`translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50px))`
+    }
     
     let cursorDisplay = displayCursor ? "flex" : "none";
-
+    
     return (
-        <CustomMain onMouseEnter={cursorState} onMouseLeave={cursorState}>
-            <FindImage onMouseMove={moveCursor} className="findPicture" src={findPicture} alt="find-character"/>
+        <CustomMain>
+            <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={findPicture} alt="find-character"/>
             <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
-            <LocationPointer>+</LocationPointer>
+            <LocationPointer ref={locationRef}><div>+</div></LocationPointer>
+            <CharacterOption/>
         </CustomMain>
     )
 }

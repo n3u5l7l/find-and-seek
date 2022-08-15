@@ -45,10 +45,14 @@ const CharacterList = styled.div`
 `;
 
 export default function CharacterOption(){
+    
+
 
     return(
-        <CharacterList>
+        <CharacterList style={{}}>
             <div className="close"></div>
+            <div className="character">Ash</div>
+            <div className="character">Tom</div>
         </CharacterList>
     )
 }
