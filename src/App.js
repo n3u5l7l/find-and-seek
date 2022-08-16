@@ -11,19 +11,23 @@ import {
     updateDoc
 } from "firebase/firestore";
 import { async } from "@firebase/util";
-import Header from "./components/Header";
-import Image from "./components/Image";
 import "./App.css";
-export default function App() {
-    let [displayCursor, setDisplayCursor] = useState(false);
+import StartScreen from "./components/StartScreen";
+import GameScreen from "./components/GameScreen";
+import React from "react";
+import findImage from "./assets/egor-klyuchnyk-full-x-season-web.jpg";
 
-    function cursorDisplay (e) {
-        setDisplayCursor((prevState) => !prevState);
-    }
-    return (<div>
-        <Header />
-        <Image cursorState={cursorDisplay} displayCursor={displayCursor}/>
-    </div>)
+new Image().src = `${findImage}`; //pre-load the image before actually showing it, putting it in cache I guess?
+
+export default function App() {
+    const [startScreen, setStartScreen] = useState(true);
+
+    let showInPage = startScreen ? (
+        <StartScreen setStartScreen={setStartScreen}/>
+    ) : (
+        <GameScreen/>
+    )
+    return showInPage;
 }
 /* export default function App() {
     const userCollectionRef = collection(db, "leaderboard");
