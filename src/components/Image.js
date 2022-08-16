@@ -2,7 +2,7 @@ import findPicture from "../assets/egor-klyuchnyk-full-x-season-web.jpg";
 import CharacterOption from "./CharacterOption";
 import "styled-components";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRef } from "react";
 
 const CustomMain = styled.main`
@@ -49,6 +49,7 @@ const LocationPointer = styled.div`
     justify-content: center;
     align-items: center;
     width:15px; height:15px;
+    margin-top:-2px;
     font-size: 50px;
     top:0; left:0;
     font-weight: bolder;
@@ -60,6 +61,7 @@ const LocationPointer = styled.div`
         margin-top: -6.5px;
     }
 `;
+
 
 export default function Image({displayCursor, cursorState}){
     const [cursorPos, setCursorPos] = useState([]);
@@ -94,8 +96,13 @@ export default function Image({displayCursor, cursorState}){
         }else{
             characterOptionRef.current.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
         } 
+    } 
+
+    function closeOption (){
+        locationRef.current.style.display="none";
+        characterOptionRef.current.style.display="none";
     }
-    
+
     let cursorDisplay = displayCursor ? "flex" : "none";
     
     return (
@@ -103,7 +110,7 @@ export default function Image({displayCursor, cursorState}){
             <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={findPicture} alt="find-character"/>
             <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
             <LocationPointer ref={locationRef}><div>+</div></LocationPointer>
-            <CharacterOption ref={characterOptionRef}/>
+            <CharacterOption ref={characterOptionRef} closeOption={closeOption}/>
         </CustomMain>
     )
 }

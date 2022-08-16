@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { forwardRef } from "react";
+import { useCallback } from "react";
 const CharacterList = styled.div`
     position: absolute;
     top:0; left:0;
@@ -51,11 +52,11 @@ const CharacterList = styled.div`
 const characterArr = ["Ash", "Tom", "Crocodie"];
 
 const CharacterOption = (props, ref) => {
-   // let displayOption = props.showOption ? "flex" : "none";
+
 
     return(
         <CharacterList ref={ref}>
-            <div className="close">❌</div>
+            <div className="close" onClick={props.closeOption}>❌</div>
             {characterArr.map((chars, index) => <div className="character" key={index}>{chars}</div>)}
         </CharacterList>
     )
