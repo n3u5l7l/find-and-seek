@@ -4,6 +4,7 @@ import styled from "styled-components"
 const CustomHeader = styled.header`
     position:sticky;
     display:flex;
+    align-self: stretch;
     align-items:center;
     flex-direction:column;
     background-color: black;

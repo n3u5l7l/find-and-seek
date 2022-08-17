@@ -1,4 +1,9 @@
-import styled from "styled-components"
+import React from "react";
+import styled from "styled-components";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { useCallback } from "react";
+import particlesOptions from "../particles.json";
 
 const StartPage = styled.main`
     display: flex;
@@ -6,11 +11,22 @@ const StartPage = styled.main`
     justify-content: center;
     align-items: center;
     gap:25px;
-    background-color: black;
     min-height: 100vh;
     margin:0; padding:0;
     color:white;
 `;
+
+const Particle = styled(Particles)`
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    z-index: -1;
+`;
+
 const CustomButton = styled.button`
     border: 1px solid white;
     background-color: black;
@@ -29,10 +45,13 @@ const ButtonWrapper = styled.div`
     flex-direction: column;
 `
 export default function StartScreen({setStartScreen}){
-    
+    const particlesInit = useCallback( async (engine) => {
+        await loadFull(engine);
+    }, []);
 
     return (
         <StartPage>
+            <Particle id="tsparticles" options={particlesOptions} init={particlesInit} />
             <h1>Find-And-Seek</h1>
             <Menu>
                 <ButtonWrapper className="option-wrapper">
