@@ -17,6 +17,8 @@ import GameScreen from "./components/GameScreen";
 import React from "react";
 import findImage from "./assets/egor-klyuchnyk-full-x-season-web.jpg";
 import Particles from "react-tsparticles";
+import {motion} from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 new Image().src = `${findImage}`; //pre-load the image before actually showing it, putting it in cache I guess?
 
@@ -25,13 +27,15 @@ export default function App() {
 
 
     let showInPage = startScreen ? (
-        <StartScreen setStartScreen={setStartScreen}/>
+        <StartScreen key="start" setStartScreen={setStartScreen}/>
     ) : (
         <GameScreen/>
     )
     return (
         <div className="App"> 
-            {showInPage}
+            <AnimatePresence>
+                {showInPage}
+            </AnimatePresence>
         </div>);
 }
 /* export default function App() {

@@ -4,13 +4,15 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { useCallback } from "react";
 import particlesOptions from "../particles.json";
+import { motion } from "framer-motion";
 
-const StartPage = styled.main`
+const StartPage = styled(motion.main)`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap:25px;
+    min-width: 100vw;
     min-height: 100vh;
     margin:0; padding:0;
     color:white;
@@ -58,7 +60,7 @@ export default function StartScreen({setStartScreen}){
     }, []);
 
     return (
-        <StartPage>
+        <StartPage  exit={{opacity:0}} transition={{duration:0.5}}  >
             <Particle id="tsparticles" options={particlesOptions} init={particlesInit} />
             <h1>Find-And-Seek</h1>
             <Menu>
