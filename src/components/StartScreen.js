@@ -31,6 +31,14 @@ const CustomButton = styled.button`
     border: 1px solid white;
     background-color: black;
     color:white;
+    cursor: pointer;
+    opacity:0.7;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+    &:hover{
+        opacity: 1;
+        transform: scale(1.1);
+    }
 `;
 const Menu = styled.nav`
     display: flex;
