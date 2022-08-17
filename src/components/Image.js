@@ -2,7 +2,7 @@ import findPicture from "../assets/egor-klyuchnyk-full-x-season-web.jpg";
 import CharacterOption from "./CharacterOption";
 import "styled-components";
 import styled from "styled-components";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useRef } from "react";
 
 const CustomMain = styled.main`
@@ -35,6 +35,7 @@ const CustomCursor = styled.div`
     background-clip: content-box;
     box-shadow: inset 0 0 0 20px rgba(245, 243, 243, 0.3);
     top:0; left:0;
+    transform: translate(10000px, 10000px);
     z-index:20000;
     pointer-events: none;
 
