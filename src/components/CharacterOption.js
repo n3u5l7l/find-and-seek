@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { forwardRef } from "react";
 import { useCallback } from "react";
 const CharacterList = styled.div`
-    position: absolute;
+    position: fixed;
     top:0; left:0;
     color: black;
     width: max-content;
@@ -11,7 +11,6 @@ const CharacterList = styled.div`
     flex-direction: column;
     background-color: bisque;
     font-weight: bolder;
-    margin-top:20px;
 
     & > .close{
         position: absolute;

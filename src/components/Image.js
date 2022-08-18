@@ -45,7 +45,7 @@ const CustomCursor = styled.div`
 `;
 
 const LocationPointer = styled.div`
-    position: absolute;
+    position: fixed;
     display:none;
     justify-content: center;
     align-items: center;
@@ -63,6 +63,17 @@ const LocationPointer = styled.div`
     }
 `;
 
+function getPagePos(event){
+    const x = event.pageX;
+    const y = event.pageY;
+
+    const scrollLeft = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
+    const scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    const curX =  x - scrollLeft;
+    const curY = y - scrollTop;
+
+    return [curX, curY];
+}
 
 export default function Image({displayCursor, cursorState}){
     const [cursorPos, setCursorPos] = useState([]);
@@ -71,32 +82,27 @@ export default function Image({displayCursor, cursorState}){
     const characterOptionRef = useRef(null);
 
     function moveCursor (event){
-        const x = event.pageX;
-        const y = event.pageY;
-    
-        const scrollLeft = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
-        const scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-        const curX =  x - scrollLeft;
-        const curY = y - scrollTop;
-        
+        const [curX, curY] = getPagePos(event);
         setCursorPos([curX, curY]);
     }
-
+  
     function displayOption (event){
-        const x = event.pageX;
-        const y = event.pageY + 10;
+        const [x, y] = getPagePos(event);
+
+        locationRef.current.style.display="flex";
+        locationRef.current.style.transform=`translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`;
 
         characterOptionRef.current.style.display="flex";
-        locationRef.current.style.display="flex";
-        locationRef.current.style.transform=`translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50px))`;
 
-         if(x + 30 >= imageRef.current.clientWidth){
-            characterOptionRef.current.style.transform = `translate(calc(${x}px - 150%), calc(${y}px - 50%))`;
-        }else if (x - 30 <= 0){
-            characterOptionRef.current.style.transform = `translate(calc(${x}px + 40%), calc(${y}px - 50%))`;
+        if(x + 50 >= imageRef.current.clientWidth){
+            characterOptionRef.current.style.transform = `translate(calc(${x}px - 150%), calc(${y}px + 30%))`;
+        }else if (x - 50 <= 0){
+            characterOptionRef.current.style.transform = `translate(calc(${x}px + 50%), calc(${y}px + 30%))`;
         }else{
-            characterOptionRef.current.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+            characterOptionRef.current.style.transform = `translate(calc(${x}px - 50%), calc(${y}px + 30%))`;
         } 
+       // displayOptionPointer();
+      //  displayOptionMenu(curX, curY);
     } 
 
     function closeOption (){

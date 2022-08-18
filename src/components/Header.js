@@ -1,5 +1,6 @@
 import Character from "./Character"
 import styled from "styled-components"
+import { forwardRef } from "react"
 
 const CustomHeader = styled.header`
     position:sticky;
@@ -48,10 +49,10 @@ const CustomInput = styled.input`
     }
 `
 
-export default function Header(){
+function Header({ref}){
 
     return (
-        <CustomHeader className="time">
+        <CustomHeader ref={ref}>
             <div className="time">00:00:00</div>
             <CharacterList className="character-dropdown" htmlFor="checklist">Character</CharacterList>
             <CustomInput type="checkbox" id="checklist"></CustomInput>
@@ -59,3 +60,5 @@ export default function Header(){
         </CustomHeader>
     )
 }
+
+export default forwardRef(Header);
