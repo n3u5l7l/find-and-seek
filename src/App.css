@@ -15,3 +15,63 @@ body{
   margin:0; padding:0;
   color:white;
 }
+
+
+.map-option-box{
+  padding:20px;
+  background-color: black;
+  border-radius: 15px;
+  width:500px;
+  height:500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap:10px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 3;
+}
+
+.alice-carousel__prev-btn [data-area]::after, .alice-carousel__next-btn [data-area]::after{
+  color: rgb(246, 246, 246);
+  font-size: 40px;
+}
+
+@media (max-width: 600px) {
+  .map-option-box{
+      width:330px;
+  }
+}
+
+@media(min-width: 1000px){
+  .alice-carousel__prev-btn, .alice-carousel__next-btn{
+    position: absolute;
+    top: 50%;
+    width:27% !important;
+    transform: translateY(-50%);
+  }
+  .alice-carousel__prev-btn-wrapper, .alice-carousel__next-btn-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .alice-carousel__prev-btn [data-area]::after, .alice-carousel__next-btn [data-area]::after{
+    color: white;
+    font-size: 100px;
+    width:100px;
+    height:100px;
+    transform:translate(-50%,-50%);
+  }
+  .alice-carousel__prev-btn-item, .alice-carousel__next-btn-item{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width:90px;
+    height:90px;
+  }
+  .alice-carousel__next-btn{
+    left:100%;
+    transform: translate(-100%, -50%);
+  }
+}
