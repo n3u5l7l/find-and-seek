@@ -49,16 +49,14 @@ const CustomInput = styled.input`
     }
 `
 
-function Header({ref}){
+export default function Header({characters}){
 
     return (
-        <CustomHeader ref={ref}>
+        <CustomHeader>
             <div className="time">00:00:00</div>
             <CharacterList className="character-dropdown" htmlFor="checklist">Character</CharacterList>
             <CustomInput type="checkbox" id="checklist"></CustomInput>
-            <Character/>
+            <Character characters={characters}/>
         </CustomHeader>
     )
 }
-
-export default forwardRef(Header);

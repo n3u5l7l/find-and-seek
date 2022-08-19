@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import AshKetchum from "../assets/ash-ketch-1.png";
-import Tom from "../assets/tom-tom-and-jerry-png-418409.png"
 
 const CustomSection = styled.section`
     display: none;
@@ -16,18 +14,17 @@ const CustomSection = styled.section`
         height:auto;
     }
 `
-export default function Character (){
+export default function Character ({characters}){
 
     return (
         <CustomSection className="character-dropdown-list">
-            <div className="character">
-                <img src={AshKetchum} alt="Ash Ketchum"></img>
-                <div>Ash</div>
-            </div>
-            <div className="character">
-                <img src={Tom} alt="Tom"></img>
-                <div>Tom</div>
-            </div>
+            {characters.map((char, index) => (
+                <div className="character">
+                    <img src={char.image} key={index} alt={char.name}></img>
+                    <div>{char.name}</div>
+                </div>
+            ))}
+           
         </CustomSection>
     )
 }
