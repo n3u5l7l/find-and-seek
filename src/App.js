@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 import { db } from "./firebase-config";
 import { 
     collection,
@@ -10,32 +10,34 @@ import {
     setDoc,
     updateDoc
 } from "firebase/firestore";
-import { async } from "@firebase/util";
 import "./App.css";
 import StartScreen from "./components/StartScreen";
 import GameScreen from "./components/GameScreen";
 import React from "react";
 import findImage from "./assets/egor-klyuchnyk-full-x-season-web.jpg";
-import Particles from "react-tsparticles";
-import {motion} from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 
 new Image().src = `${findImage}`; //pre-load the image before actually showing it, putting it in cache I guess?
 
+export const GameImageContext = createContext();
+
 export default function App() {
     const [startScreen, setStartScreen] = useState(true);
-
+    const [gameImage, setGameImage] = useState("");
 
     let showInPage = startScreen ? (
         <StartScreen key="start" setStartScreen={setStartScreen}/>
     ) : (
-        <GameScreen/>
-    )
+        <GameScreen gameImage={gameImage}/>
+    );
+
     return (
         <div className="App"> 
-            <AnimatePresence>
-                {showInPage}
-            </AnimatePresence>
+            <GameImageContext.Provider value={{setGameImage, setStartScreen}}>
+                <AnimatePresence>
+                    {showInPage}
+                </AnimatePresence>
+            </GameImageContext.Provider>
         </div>);
 }
 /* export default function App() {
@@ -77,4 +79,26 @@ export default function App() {
         }
         )}
         </div>
+    const userCollectionRef = collection(db, "CharacterLocation");
+    const userBoard = doc(db, "CharacterLocation", "ash");
+        useEffect(() => {
+        const getPlayer = async () => {
+            try{
+            const data = await getDoc(userBoard);
+            console.log(data.data());
+           // setPlayer(data.docs.map((doc)=>({...doc.data()}))); //pa: doc.data().name
+            }catch(err){
+                console.log(err);
+            }
+        }
+        const updateDoc = async () => {
+            const ref = doc(db, "leaderboard", "player1");
+            await setDoc(ref, {time: serverTimestamp()}, {merge: true});
+            const data = await getDocs(userCollectionRef);
+            //setPlayer(data.docs.map((doc)=>({...doc.data()}))); 
+            console.log(data.docs.map((doc)=>({...doc.data()})));
+        }
+
+        getPlayer();
+    }, []);
 } */
