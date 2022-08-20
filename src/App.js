@@ -16,29 +16,44 @@ import GameScreen from "./components/GameScreen";
 import React from "react";
 import findImage from "./assets/egor-klyuchnyk-full-x-season-web.jpg";
 import { AnimatePresence } from "framer-motion";
-
+import MenuPage from "./components/Menu";
+import Leaderboard from "./components/LeaderBoard";
+import { useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Maps from "./components/Map";
 new Image().src = `${findImage}`; //pre-load the image before actually showing it, putting it in cache I guess?
 
 export const GameImageContext = createContext();
 
 export default function App() {
-    const [startScreen, setStartScreen] = useState(true);
-    const [gameImage, setGameImage] = useState("");
+ //   const [startScreen, setStartScreen] = useState(true);
+  //  const [optionScreen, setOptionScreen] = useState(false);
+  //  const [leaderboardScreen, setLeaderboardScreen] = useState(false);
+    //const [gameImage, setGameImage] = useState("");
 
-    let showInPage = startScreen ? (
-        <StartScreen key="start" setStartScreen={setStartScreen}/>
-    ) : (
-        <GameScreen gameImage={gameImage}/>
-    );
+    let location = useLocation();
+
+   // let gameScreen = gameImage ? <GameScreen gameImage={gameImage}/> : null;
+   // let showInPage = startScreen ? 
+   //     <StartScreen key="start" setStartScreen={setStartScreen} setOptionScreen={setOptionScreen} setLeaderboardScreen={setLeaderboardScreen}/>
+   //   : optionScreen ? <MenuPage/>
+   //   : leaderboardScreen ? <Leaderboard /> 
+   //   : <GameScreen gameImage={gameImage}/>
+
 
     return (
-        <div className="App"> 
-            <GameImageContext.Provider value={{setGameImage, setStartScreen}}>
-                <AnimatePresence>
-                    {showInPage}
-                </AnimatePresence>
-            </GameImageContext.Provider>
-        </div>);
+            <div className="App"> 
+                
+                    
+                        <Routes location={location} key={location.pathname}>
+                            <Route index element={<StartScreen />}/>
+                            <Route path="/menu" element={<Maps />}/>
+                            <Route path="/leaderboard" element={<Leaderboard />}/>
+                            <Route path="/menu/:mapName" element={<GameScreen/>}/>
+                        </Routes>
+                    
+               
+            </div>);
 }
 /* export default function App() {
     const userCollectionRef = collection(db, "leaderboard");
