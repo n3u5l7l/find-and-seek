@@ -19,8 +19,8 @@ export default function Character ({characters}){
     return (
         <CustomSection className="character-dropdown-list">
             {characters.map((char, index) => (
-                <div className="character">
-                    <img src={char.image} key={index} alt={char.name}></img>
+                <div className="character" key={index}>
+                    <img src={char.image}  alt={char.name}></img>
                     <div>{char.name}</div>
                 </div>
             ))}
