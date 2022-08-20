@@ -4,7 +4,7 @@
       "value": "#282c34"
     }
   },
-  "fpsLimit": 30,
+  "fpsLimit": 50,
   "interactivity": {
     "events": {
       "onClick": {
