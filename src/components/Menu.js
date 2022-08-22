@@ -25,7 +25,7 @@ function MapSelect({name, imageSource}){
     const location = useContext(LocationContext);
     
     const button = location.name === "Maps" ? "Select" : "View LeaderBoard";
-    const toLocation = location.name === "Maps" ? `menu/${name}` : `leaderboard/${name}`;
+    const toLocation = location.name === "Maps" ? `${name}` : `leaderboard/${name}`;
     return(
         <div className="map-option-box" onDragStart={handleDragStart} role="presentation">
             <h1 style={{margin:"0", padding:"0", alignSelf:"center"}}>{name}</h1>
