@@ -48,8 +48,8 @@ export default function App() {
                         <Routes location={location} key={location.pathname}>
                             <Route index element={<StartScreen />}/>
                             <Route path="/menu" element={<Maps />}/>
-                            <Route path="/leaderboard" element={<Leaderboard />}/>
-                            <Route path="/menu/:mapName" element={<GameScreen/>}/>
+                            <Route path="/leaderboard/*" element={<Leaderboard />}/>
+                            <Route path="/:mapName" element={<GameScreen/>}/>
                         </Routes>
                     
                
