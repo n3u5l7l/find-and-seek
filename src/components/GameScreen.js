@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { MapInfo } from "./Menu";
 
 
-export default function GameScreen({gameImage}) {
+export default function GameScreen() {
     const [displayCursor, setDisplayCursor] = useState(false);
     
     const params = useParams();
