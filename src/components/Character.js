@@ -44,12 +44,12 @@ const CustomSection = styled.section`
         transform:translateY(-50%);
     }
 `
-export default function Character ({characters, deleteChar}){
+export default function Character ({characters, charFound}){
 
     return (
         <CustomSection className="character-dropdown-list">
             {characters.map((char, index) => (
-                <div className={deleteChar===char.name?"character found": "character"} key={index}>
+                <div className={charFound.includes(char.name) ?"character found": "character"} key={index}>
                     <img src={char.image}  alt={char.name}></img>
                     <div>{char.name}</div>
                 </div>
