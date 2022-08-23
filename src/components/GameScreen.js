@@ -1,5 +1,5 @@
 import Header from "./Header";
-import Image from "./Image";
+import Game from "./Game";
 import React from "react";
 import { useState } from "react";
 import CyberPunkSrc from "../assets/egor-klyuchnyk-full-x-season-web.jpg";
@@ -8,11 +8,15 @@ import Tom from "../assets/tom-tom-and-jerry-png-418409.png"
 import { Navigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { MapInfo } from "./Menu";
+import Character from "./Character";
+import { useEffect } from "react";
 
 
 export default function GameScreen() {
     const [displayCursor, setDisplayCursor] = useState(false);
-    
+    const [charFound, setCharFound] = useState([]);
+    const [gameFinish, setGameFinish] = useState(false);
+
     const params = useParams();
 
     function cursorDisplay (e) {
@@ -22,9 +26,11 @@ export default function GameScreen() {
     const thisMap = MapInfo.find((map)=>Object.keys(map)[0] === params.mapName);
 
     return (
-        <>
-    <Header characters={thisMap[params.mapName].characters}/>
-    <Image gameImage={thisMap[params.mapName].src} gameCharacter={thisMap[params.mapName].characters} cursorState={cursorDisplay} displayCursor={displayCursor}/>
-</> 
+    <>
+        <Header>
+            <Character characters={thisMap[params.mapName].characters} charFound={charFound} />
+        </Header>
+        <Game gameFinish={gameFinish} setGameFinish={setGameFinish} charFound={charFound} setCharFound={setCharFound} mapName={params.mapName} gameImage={thisMap[params.mapName].src} gameCharacter={thisMap[params.mapName].characters} cursorState={cursorDisplay} displayCursor={displayCursor}/>
+    </> 
     );
 }
