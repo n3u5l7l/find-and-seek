@@ -49,14 +49,14 @@ const CustomInput = styled.input`
     }
 `
 
-export default function Header({characters}){
+export default function Header({children}){
 
     return (
         <CustomHeader>
             <div className="time">00:00:00</div>
             <CharacterList className="character-dropdown" htmlFor="checklist">Character</CharacterList>
             <CustomInput type="checkbox" id="checklist"></CustomInput>
-            <Character characters={characters}/>
+            {children}
         </CustomHeader>
     )
 }
