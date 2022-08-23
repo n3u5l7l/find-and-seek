@@ -56,7 +56,7 @@ const CharacterOption = (props, ref) => {
     return(
         <CharacterList ref={ref}>
             <div className="close" onClick={props.closeOption}>❌</div>
-            {props.gameCharacter.map((chars, index) => <div className="character" key={index}>{chars.name}</div>)}
+            {props.gameCharacter.map((chars, index) => <div className="character" key={index} onClick={()=>props.checkCoordinate(chars.name)}>{chars.name}</div>)}
         </CharacterList>
     )
 }

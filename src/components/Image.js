@@ -4,6 +4,15 @@ import "styled-components";
 import styled from "styled-components";
 import { useState } from "react";
 import { useRef } from "react";
+import { db } from "../firebase-config";
+import { 
+    collection,
+    doc,
+    getDoc,
+} from "firebase/firestore";
+import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 
 const CustomMain = styled.main`
     position: relative;
@@ -63,6 +72,20 @@ const LocationPointer = styled.div`
     }
 `;
 
+const FoundDisplay = styled(motion.div)`
+    position: fixed;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 46px;
+    top:0;
+    z-index: 2;
+    color:black;
+    font-weight: bolder;
+    background-color: rgb(80 207 118);
+`
+
 function getPagePos(event){
     const x = event.pageX;
     const y = event.pageY;
@@ -75,8 +98,10 @@ function getPagePos(event){
     return [curX, curY];
 }
 
-export default function Image({displayCursor, cursorState}){
+export default function Image({displayCursor, cursorState, gameImage, gameCharacter, mapName, setDeleteChar}){
     const [cursorPos, setCursorPos] = useState([]);
+    const [foundChar, setFoundChar] = useState(false);
+    const locationCoord = useRef(cursorPos);
     const imageRef = useRef(null);
     const locationRef = useRef(null);
     const characterOptionRef = useRef(null);
@@ -89,11 +114,15 @@ export default function Image({displayCursor, cursorState}){
     function displayOption (event){
         const [x, y] = getPagePos(event);
 
+        //Display the location pointer
         locationRef.current.style.display="flex";
-        locationRef.current.style.transform=`translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`;
+        locationRef.current.style.transform=`translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+
+        locationCoord.current = [event.nativeEvent.offsetX, event.nativeEvent.offsetY];
 
         characterOptionRef.current.style.display="flex";
 
+        //Checks if menu gets hidden if cursor at left and right edges
         if(x + 50 >= imageRef.current.clientWidth){
             characterOptionRef.current.style.transform = `translate(calc(${x}px - 150%), calc(${y}px + 30%))`;
         }else if (x - 50 <= 0){
@@ -101,8 +130,6 @@ export default function Image({displayCursor, cursorState}){
         }else{
             characterOptionRef.current.style.transform = `translate(calc(${x}px - 50%), calc(${y}px + 30%))`;
         } 
-       // displayOptionPointer();
-      //  displayOptionMenu(curX, curY);
     } 
 
     function closeOption (){
@@ -110,14 +137,45 @@ export default function Image({displayCursor, cursorState}){
         characterOptionRef.current.style.display="none";
     }
 
+    async function checkCoordinate (character){
+        const charDoc = doc(db, `${mapName}-characters`, character);
+        const data = await getDoc(charDoc);
+        
+        const x = (locationCoord.current[0] / imageRef.current.clientWidth) * 100;
+        const y = (locationCoord.current[1] / imageRef.current.clientHeight) * 100;
+        if(x >= data.data()["x-min"] && x <= data.data()["x-max"] && y >= data.data()["y-min"] && y <= data.data()["y-max"]){
+            //alert("FOUND");
+            setFoundChar(true);
+            setTimeout(()=>{
+                setFoundChar(false);
+            },2000);
+            setDeleteChar(character);
+        }
+
+        console.log(data.data());
+        //console.log(locationCoord.current[1] / imageRef.current.clientHeight);
+        //console.log(locationCoord.current[0] / imageRef.current.clientWidth);
+    }
+
+    useEffect(()=>{
+
+        document.addEventListener("scroll", closeOption);
+
+        return ()=>{
+            document.removeEventListener("scroll", closeOption)};
+    }, [])
+
     let cursorDisplay = displayCursor ? "flex" : "none";
     
     return (
         <CustomMain>
-            <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={findPicture} alt="find-character"/>
+            <AnimatePresence>
+            {foundChar && <FoundDisplay key="foundChar" initial={{y:-100}} animate={{y:0}} exit={{y:-100}}>Found Ash</FoundDisplay>}
+            </AnimatePresence>
+            <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={gameImage} alt="find-character"/>
             <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
             <LocationPointer ref={locationRef}><div>+</div></LocationPointer>
-            <CharacterOption ref={characterOptionRef} closeOption={closeOption}/>
+            <CharacterOption checkCoordinate={checkCoordinate} gameCharacter={gameCharacter} ref={characterOptionRef} closeOption={closeOption}/>
         </CustomMain>
     )
 }
