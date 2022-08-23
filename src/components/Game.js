@@ -8,11 +8,13 @@ import { db } from "../firebase-config";
 import { 
     collection,
     doc,
+    addDoc,
     getDoc,
 } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import GameFinishForm from "./GameHelper";
 
 const CustomMain = styled.main`
     position: relative;
@@ -98,9 +100,11 @@ function getPagePos(event){
     return [curX, curY];
 }
 
-export default function Image({displayCursor, cursorState, gameImage, gameCharacter, mapName, setDeleteChar}){
+
+export default function Image({displayCursor, cursorState, gameImage, gameCharacter, mapName, charFound, setCharFound, gameFinish, setGameFinish}){
     const [cursorPos, setCursorPos] = useState([]);
     const [foundChar, setFoundChar] = useState(false);
+    const totalFoundChars = useRef(0);
     const locationCoord = useRef(cursorPos);
     const imageRef = useRef(null);
     const locationRef = useRef(null);
@@ -144,17 +148,21 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
         const x = (locationCoord.current[0] / imageRef.current.clientWidth) * 100;
         const y = (locationCoord.current[1] / imageRef.current.clientHeight) * 100;
         if(x >= data.data()["x-min"] && x <= data.data()["x-max"] && y >= data.data()["y-min"] && y <= data.data()["y-max"]){
-            //alert("FOUND");
+            totalFoundChars.current++;
+            if(totalFoundChars.current===gameCharacter.length){
+                closeOption();
+                setGameFinish(true);
+            }
             setFoundChar(true);
             setTimeout(()=>{
                 setFoundChar(false);
             },2000);
-            setDeleteChar(character);
+            setCharFound((prev) => [...prev, character]);
         }
 
         console.log(data.data());
-        //console.log(locationCoord.current[1] / imageRef.current.clientHeight);
-        //console.log(locationCoord.current[0] / imageRef.current.clientWidth);
+        console.log(locationCoord.current[1] / imageRef.current.clientHeight);
+        console.log(locationCoord.current[0] / imageRef.current.clientWidth);
     }
 
     useEffect(()=>{
@@ -170,7 +178,8 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
     return (
         <CustomMain>
             <AnimatePresence>
-            {foundChar && <FoundDisplay key="foundChar" initial={{y:-100}} animate={{y:0}} exit={{y:-100}}>Found Ash</FoundDisplay>}
+            {foundChar && <FoundDisplay key="foundChar" initial={{y:-100}} animate={{y:0}} exit={{y:-100}}>Found {charFound[charFound.length-1]}</FoundDisplay>}
+            {gameFinish && <GameFinishForm mapName={mapName} timeStamp="00:05:42"/>}
             </AnimatePresence>
             <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={gameImage} alt="find-character"/>
             <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
