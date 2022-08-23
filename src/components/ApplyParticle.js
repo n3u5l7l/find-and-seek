@@ -25,10 +25,10 @@ export default function ApplyParticle(props) {
     return (Component) => {
 
         return ( 
-            <Page  exit={{opacity:0}} transition={{duration:0.5}}  >
+            <>
                 <Particles id="tsparticles" options={particlesOptions} init={particlesInit} />
                 <Component {...props}/>
-            </Page>
+            </>
         )
     }
 }
