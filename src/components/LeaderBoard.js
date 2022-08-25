@@ -6,7 +6,9 @@ import { Route, Routes, useParams } from "react-router-dom";
 import { db } from "../firebase-config";
 import { 
     collection,
-    getDocs
+    orderBy,
+    getDocs,
+    query
 } from "firebase/firestore";
 
 const CustomMain = styled.main`
@@ -93,8 +95,10 @@ function LeaderBoardInfo(){
     useEffect(()=>{
         const getAllPlayers = async () => {
             try{
-            const data = await getDocs(userCollectionRef);
-            setPlayers(data.docs.map((doc)=>({...doc.data()}))); //pa: doc.data().name
+            const data = await getDocs(query(userCollectionRef, orderBy("actualTime")));
+
+            setPlayers(data.docs.map((doc)=>({...doc.data()})));
+
             }catch(err){
                 console.log(err);
             }
