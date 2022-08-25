@@ -87,7 +87,19 @@ const FoundDisplay = styled(motion.div)`
     font-weight: bolder;
     background-color: rgb(80 207 118);
 `
-
+const NotFoundDisplay = styled(motion.div)`
+    position: fixed;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 46px;
+    top:0;
+    z-index: 2;
+    color:black;
+    font-weight: bolder;
+    background-color: red;
+`
 function getPagePos(event){
     const x = event.pageX;
     const y = event.pageY;
@@ -101,9 +113,10 @@ function getPagePos(event){
 }
 
 
-export default function Image({displayCursor, cursorState, gameImage, gameCharacter, mapName, charFound, setCharFound, gameFinish, setGameFinish}){
+export default function Image({displayCursor, cursorState, gameImage, gameCharacter, mapName, charFound, setCharFound, gameFinish, setGameFinish, time, timeInterval}){
     const [cursorPos, setCursorPos] = useState([]);
     const [foundChar, setFoundChar] = useState(false);
+    const [incorrectChoice, setIncorrectChoice] = useState(false);
     const totalFoundChars = useRef(0);
     const locationCoord = useRef(cursorPos);
     const imageRef = useRef(null);
@@ -144,20 +157,25 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
     async function checkCoordinate (character){
         const charDoc = doc(db, `${mapName}-characters`, character);
         const data = await getDoc(charDoc);
+        closeOption();
         
         const x = (locationCoord.current[0] / imageRef.current.clientWidth) * 100;
         const y = (locationCoord.current[1] / imageRef.current.clientHeight) * 100;
         if(x >= data.data()["x-min"] && x <= data.data()["x-max"] && y >= data.data()["y-min"] && y <= data.data()["y-max"]){
             totalFoundChars.current++;
             if(totalFoundChars.current===gameCharacter.length){
-                closeOption();
+                clearInterval(timeInterval.current);
                 setGameFinish(true);
+                
             }
             setFoundChar(true);
             setTimeout(()=>{
                 setFoundChar(false);
-            },2000);
+            },1000);
             setCharFound((prev) => [...prev, character]);
+        }else{
+            setIncorrectChoice(true);
+            setTimeout(()=>{setIncorrectChoice(false)}, 1000)
         }
 
         console.log(data.data());
@@ -179,7 +197,8 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
         <CustomMain>
             <AnimatePresence>
             {foundChar && <FoundDisplay key="foundChar" initial={{y:-100}} animate={{y:0}} exit={{y:-100}}>Found {charFound[charFound.length-1]}</FoundDisplay>}
-            {gameFinish && <GameFinishForm mapName={mapName} timeStamp="00:05:42"/>}
+            {incorrectChoice && <NotFoundDisplay key="notFoundChar" initial={{y:-100}} animate={{y:0}} exit={{y:-100}}>Incorrect</NotFoundDisplay>}
+            {gameFinish && <GameFinishForm timeStamp={time} mapName={mapName} />}
             </AnimatePresence>
             <FindImage ref={imageRef} onClick={(e) => displayOption(e, this)} onMouseEnter={cursorState} onMouseLeave={cursorState} onMouseMove={moveCursor} src={gameImage} alt="find-character"/>
             <CustomCursor style={{display: cursorDisplay, transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`}}><div>+</div></CustomCursor>
