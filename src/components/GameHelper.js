@@ -8,6 +8,7 @@ import {
     getDoc,
 } from "firebase/firestore";
 import { useNavigate, Navigate } from "react-router-dom";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 const CustomForm = styled.form`
     position: fixed;
@@ -20,6 +21,7 @@ const CustomForm = styled.form`
     background-color: rgba(143,143,143,0.5);
     width: 100%;
     height: 100%;
+    z-index: 3;
 `
 
 const Congratulations = styled.div`
@@ -44,26 +46,33 @@ const Button = styled.button`
         transform:scale(1.01);
     }
 `
+
 export default function GameFinishForm({mapName, timeStamp}){
     const [playerName, setPlayerName] = useState("");
+    const [uploadingData, setUpdloadingData] = useState(false);
     const navigate = useNavigate();
 
     async function handleSubmit(e){
         e.preventDefault();
-        if(playerName===""){return;};
-
+        if(playerName==="" || uploadingData){return;};
+        setUpdloadingData(true);
         await addDoc(collection(db, `${mapName}-leaderboard`), {
             name: playerName,
-            time: timeStamp
+            time: timeStamp[0],
+            actualTime: timeStamp[1]
         });
+        setUpdloadingData(false);
+        navigate("/", {replace: true});
     }
 
     function optOut(e){
         e.preventDefault();
         navigate("/", {replace: true});
     }
+
     return(
         <CustomForm onSubmit={handleSubmit}>
+            {uploadingData && <div>Uploading...</div>}
             <Congratulations>Congratulations! You Found all the Characters</Congratulations>
             <div style={{display:"flex", flexDirection:"column"}}>
                 <label htmlFor="playerName" style={{textAlign:"center", fontSize:"20px"}}>Enter your name:</label>
