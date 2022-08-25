@@ -6,9 +6,10 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 import CyberPunkSrc from "../assets/egor-klyuchnyk-full-x-season-web.jpg";
 import AshKetchum from "../assets/ash-ketch-1.png";
 import Tom from "../assets/tom-tom-and-jerry-png-418409.png";
+import Patrick from "../assets/patrick.png";
 
 export const MapInfo = [
-  {"CyberPunk": {src: CyberPunkSrc, characters: [{name: "Ash", image: AshKetchum}, {name: "Tom", image: Tom}, {name:"Patrick"}]}}
+  {"CyberPunk": {src: CyberPunkSrc, characters: [{name: "Ash", image: AshKetchum}, {name: "Tom", image: Tom}, {name: "Patrick", image: Patrick}]}}
 ]
 
 const items = MapInfo.map((map) => {
