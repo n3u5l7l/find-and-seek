@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { forwardRef } from "react";
-import { useCallback } from "react";
+
 const CharacterList = styled.div`
     position: fixed;
     top:0; left:0;
@@ -47,8 +47,6 @@ const CharacterList = styled.div`
         opacity:1;
     }
 `;
-
-const characterArr = ["Ash", "Tom", "Crocodie"];
 
 const CharacterOption = (props, ref) => {
 

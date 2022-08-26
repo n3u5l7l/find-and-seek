@@ -1,4 +1,3 @@
-import findPicture from "../assets/egor-klyuchnyk-full-x-season-web.jpg";
 import CharacterOption from "./CharacterOption";
 import "styled-components";
 import styled from "styled-components";
@@ -6,9 +5,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import { db } from "../firebase-config";
 import { 
-    collection,
     doc,
-    addDoc,
     getDoc,
 } from "firebase/firestore";
 import { motion } from "framer-motion";
@@ -177,10 +174,6 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
             setIncorrectChoice(true);
             setTimeout(()=>{setIncorrectChoice(false)}, 1000)
         }
-
-        console.log(data.data());
-        console.log(locationCoord.current[1] / imageRef.current.clientHeight);
-        console.log(locationCoord.current[0] / imageRef.current.clientWidth);
     }
 
     useEffect(()=>{
