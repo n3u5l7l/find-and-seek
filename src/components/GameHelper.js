@@ -6,9 +6,14 @@ import {
     doc,
     addDoc,
     getDoc,
+    getDocs,
+    query,
+    where,
+    limit,
 } from "firebase/firestore";
 import { useNavigate, Navigate } from "react-router-dom";
 import { upload } from "@testing-library/user-event/dist/upload";
+import { useRef } from "react";
 
 const CustomForm = styled.form`
     position: fixed;
@@ -50,11 +55,26 @@ const Button = styled.button`
 export default function GameFinishForm({mapName, timeStamp}){
     const [playerName, setPlayerName] = useState("");
     const [uploadingData, setUpdloadingData] = useState(false);
+    const inputRef = useRef(null);
     const navigate = useNavigate();
 
     async function handleSubmit(e){
         e.preventDefault();
-        if(playerName==="" || uploadingData){return;};
+        if(uploadingData){return;}
+        const data = await getDocs(query(collection(db, `${mapName}-leaderboard`), where("name", "==", playerName), limit(1)));
+        if(data.size>0){
+            inputRef.current.setCustomValidity("Name already exists");
+            inputRef.current.reportValidity();
+            setTimeout(()=>inputRef.current.setCustomValidity(""), 3000);
+            return;
+        }
+        if(playerName===""){
+            inputRef.current.setCustomValidity("Please enter a name");
+            inputRef.current.reportValidity();
+            setTimeout(()=>inputRef.current.setCustomValidity(""), 3000);
+            return;
+        };
+
         setUpdloadingData(true);
         await addDoc(collection(db, `${mapName}-leaderboard`), {
             name: playerName,
@@ -76,7 +96,7 @@ export default function GameFinishForm({mapName, timeStamp}){
             <Congratulations>Congratulations! You Found all the Characters</Congratulations>
             <div style={{display:"flex", flexDirection:"column"}}>
                 <label htmlFor="playerName" style={{textAlign:"center", fontSize:"20px"}}>Enter your name:</label>
-                <input id="playerName" value={playerName} onChange={(e)=>{setPlayerName(e.target.value)}}></input>
+                <input ref={inputRef} id="playerName" value={playerName} onChange={(e)=>{setPlayerName(e.target.value)}}></input>
                 <Button>Submit</Button>
                 <Button onClick={optOut}>Opt out leaderboard</Button>
             </div>
