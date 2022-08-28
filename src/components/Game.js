@@ -97,11 +97,11 @@ const NotFoundDisplay = styled(motion.div)`
 `;
 const Footer = styled.div`
   background-color: black;
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 function getPagePos(event) {
   const x = event.pageX;
   const y = event.pageY;
@@ -273,7 +273,16 @@ export default function Game({
           closeOption={closeOption}
         />
       </CustomMain>
-      <Footer><a style={{textDecoration:"none", color:"white"}} href={`${imageCredit}`} target="_blank" rel="noreferrer">Image provided by</a></Footer>
+      <Footer>
+        <a
+          style={{ textDecoration: "none", color: "white" }}
+          href={`${imageCredit}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Image provided by
+        </a>
+      </Footer>
     </>
   );
 }
