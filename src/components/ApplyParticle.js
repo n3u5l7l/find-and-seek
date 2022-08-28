@@ -6,7 +6,7 @@ import particlesOptions from "../particles.json";
 export default function ApplyParticle(props) {
     const particlesInit = useCallback(async (engine) => {
         await loadFull(engine);
-    }) //maybe don't need useCallback
+    }, [])
 
     return (Component) => {
 
