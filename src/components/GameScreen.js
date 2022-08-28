@@ -65,6 +65,7 @@ export default function GameScreen() {
         mapName={params.mapName}
         gameImage={thisMap[params.mapName].src}
         gameCharacter={thisMap[params.mapName].characters}
+        imageCredit={thisMap[params.mapName].creditTo}
         cursorState={cursorDisplay}
         displayCursor={displayCursor}
       />

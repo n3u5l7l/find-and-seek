@@ -95,6 +95,13 @@ const NotFoundDisplay = styled(motion.div)`
   font-weight: bolder;
   background-color: red;
 `;
+const Footer = styled.div`
+  background-color: black;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 function getPagePos(event) {
   const x = event.pageX;
   const y = event.pageY;
@@ -120,6 +127,7 @@ export default function Game({
   cursorState,
   gameImage,
   gameCharacter,
+  imageCredit,
   mapName,
   charFound,
   setCharFound,
@@ -213,57 +221,60 @@ export default function Game({
   let cursorDisplay = displayCursor ? "flex" : "none";
 
   return (
-    <CustomMain>
-      <AnimatePresence>
-        {foundChar && (
-          <FoundDisplay
-            key="foundChar"
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            exit={{ y: -100 }}
-          >
-            Found {charFound[charFound.length - 1]}
-          </FoundDisplay>
-        )}
-        {incorrectChoice && (
-          <NotFoundDisplay
-            key="notFoundChar"
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            exit={{ y: -100 }}
-          >
-            Incorrect
-          </NotFoundDisplay>
-        )}
-        {gameFinish && <GameFinishForm timeStamp={time} mapName={mapName} />}
-      </AnimatePresence>
-      <FindImage
-        ref={imageRef}
-        onClick={(e) => displayOption(e, this)}
-        onMouseEnter={cursorState}
-        onMouseLeave={cursorState}
-        onMouseMove={moveCursor}
-        src={gameImage}
-        alt="find-character"
-      />
-      <CustomCursor
-        style={{
-          display: cursorDisplay,
-          transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`,
-        }}
-      >
-        <div>+</div>
-      </CustomCursor>
-      <LocationPointer ref={locationRef}>
-        <div>+</div>
-      </LocationPointer>
-      <CharacterOption
-        checkCoordinate={checkCoordinate}
-        gameCharacter={gameCharacter}
-        ref={characterOptionRef}
-        closeOption={closeOption}
-      />
-    </CustomMain>
+    <>
+      <CustomMain>
+        <AnimatePresence>
+          {foundChar && (
+            <FoundDisplay
+              key="foundChar"
+              initial={{ y: -100 }}
+              animate={{ y: 0 }}
+              exit={{ y: -100 }}
+            >
+              Found {charFound[charFound.length - 1]}
+            </FoundDisplay>
+          )}
+          {incorrectChoice && (
+            <NotFoundDisplay
+              key="notFoundChar"
+              initial={{ y: -100 }}
+              animate={{ y: 0 }}
+              exit={{ y: -100 }}
+            >
+              Incorrect
+            </NotFoundDisplay>
+          )}
+          {gameFinish && <GameFinishForm timeStamp={time} mapName={mapName} />}
+        </AnimatePresence>
+        <FindImage
+          ref={imageRef}
+          onClick={(e) => displayOption(e, this)}
+          onMouseEnter={cursorState}
+          onMouseLeave={cursorState}
+          onMouseMove={moveCursor}
+          src={gameImage}
+          alt="find-character"
+        />
+        <CustomCursor
+          style={{
+            display: cursorDisplay,
+            transform: `translate(calc(${cursorPos[0]}px - 50%), calc(${cursorPos[1]}px - 50%))`,
+          }}
+        >
+          <div>+</div>
+        </CustomCursor>
+        <LocationPointer ref={locationRef}>
+          <div>+</div>
+        </LocationPointer>
+        <CharacterOption
+          checkCoordinate={checkCoordinate}
+          gameCharacter={gameCharacter}
+          ref={characterOptionRef}
+          closeOption={closeOption}
+        />
+      </CustomMain>
+      <Footer><a style={{textDecoration:"none", color:"white"}} href={`${imageCredit}`} target="_blank" rel="noreferrer">Image provided by</a></Footer>
+    </>
   );
 }
 
@@ -272,6 +283,7 @@ Game.propTypes = {
   cursorState: PropTypes.func,
   gameImage: PropTypes.string,
   gameCharacter: PropTypes.array,
+  imageCredit: PropTypes.string,
   mapName: PropTypes.string,
   charFound: PropTypes.bool,
   setCharFound: PropTypes.func,
