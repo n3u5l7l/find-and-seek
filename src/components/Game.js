@@ -11,7 +11,8 @@ import {
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
-import GameFinishForm from "./GameHelper";
+import GameFinishForm from "./GameFinishForm";
+import PropTypes from "prop-types";
 
 const CustomMain = styled.main`
     position: relative;
@@ -110,7 +111,7 @@ function getPagePos(event){
 }
 
 
-export default function Image({displayCursor, cursorState, gameImage, gameCharacter, mapName, charFound, setCharFound, gameFinish, setGameFinish, time, timeInterval}){
+export default function Game({displayCursor, cursorState, gameImage, gameCharacter, mapName, charFound, setCharFound, gameFinish, setGameFinish, time, timeInterval}){
     const [cursorPos, setCursorPos] = useState([]);
     const [foundChar, setFoundChar] = useState(false);
     const [incorrectChoice, setIncorrectChoice] = useState(false);
@@ -163,7 +164,6 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
             if(totalFoundChars.current===gameCharacter.length){
                 clearInterval(timeInterval.current);
                 setGameFinish(true);
-                
             }
             setFoundChar(true);
             setTimeout(()=>{
@@ -199,4 +199,18 @@ export default function Image({displayCursor, cursorState, gameImage, gameCharac
             <CharacterOption checkCoordinate={checkCoordinate} gameCharacter={gameCharacter} ref={characterOptionRef} closeOption={closeOption}/>
         </CustomMain>
     )
+}
+
+Game.propTypes={
+    displayCursor: PropTypes.bool,
+    cursorState: PropTypes.func, 
+    gameImage: PropTypes.string, 
+    gameCharacter: PropTypes.array, 
+    mapName: PropTypes.string, 
+    charFound: PropTypes.bool, 
+    setCharFound: PropTypes.func, 
+    gameFinish: PropTypes.bool, 
+    setGameFinish: PropTypes.func, 
+    time: PropTypes.string, 
+    timeInterval: PropTypes.number
 }

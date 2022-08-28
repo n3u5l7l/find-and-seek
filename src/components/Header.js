@@ -1,6 +1,6 @@
-import Character from "./Character"
 import styled from "styled-components"
-import { forwardRef, useEffect, useRef } from "react"
+import PropTypes from "prop-types";
+
 
 const CustomHeader = styled.header`
     position:sticky;
@@ -59,4 +59,9 @@ export default function Header({children, time}){
             {children}
         </CustomHeader>
     )
+}
+
+Header.propTypes={
+    children: PropTypes.element,
+    time: PropTypes.string
 }

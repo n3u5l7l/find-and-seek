@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const CustomSection = styled.section`
     display: none;
@@ -57,4 +58,10 @@ export default function Character ({characters, charFound}){
            
         </CustomSection>
     )
+}
+
+Character.prototype={
+    characters: PropTypes.array,
+    charFound: PropTypes.array
+
 }
