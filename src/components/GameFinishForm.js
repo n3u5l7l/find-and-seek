@@ -3,17 +3,15 @@ import styled from "styled-components";
 import { db } from "../firebase-config";
 import { 
     collection,
-    doc,
     addDoc,
-    getDoc,
     getDocs,
     query,
     where,
     limit,
 } from "firebase/firestore";
-import { useNavigate, Navigate } from "react-router-dom";
-import { upload } from "@testing-library/user-event/dist/upload";
+import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
+import PropTypes from "prop-types";
 
 const CustomForm = styled.form`
     position: fixed;
@@ -102,4 +100,9 @@ export default function GameFinishForm({mapName, timeStamp}){
             </div>
         </CustomForm>
     )
+}
+
+GameFinishForm.propTypes={
+    mapName: PropTypes.string,
+    timeStamp: PropTypes.array,
 }
