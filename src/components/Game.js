@@ -276,11 +276,11 @@ export default function Game({
       <Footer>
         <a
           style={{ textDecoration: "none", color: "white" }}
-          href={`${imageCredit}`}
+          href={`${imageCredit.src}`}
           target="_blank"
           rel="noreferrer"
         >
-          Image provided by
+          Image provided by {imageCredit.name}
         </a>
       </Footer>
     </>
@@ -292,12 +292,12 @@ Game.propTypes = {
   cursorState: PropTypes.func,
   gameImage: PropTypes.string,
   gameCharacter: PropTypes.array,
-  imageCredit: PropTypes.string,
+  imageCredit: PropTypes.object,
   mapName: PropTypes.string,
-  charFound: PropTypes.bool,
+  charFound: PropTypes.array,
   setCharFound: PropTypes.func,
   gameFinish: PropTypes.bool,
   setGameFinish: PropTypes.func,
-  time: PropTypes.string,
-  timeInterval: PropTypes.number,
+  time: PropTypes.array,
+  timeInterval: PropTypes.object,
 };
