@@ -63,5 +63,5 @@ export default function Header({ children, time }) {
 
 Header.propTypes = {
   children: PropTypes.element,
-  time: PropTypes.string,
+  time: PropTypes.array,
 };

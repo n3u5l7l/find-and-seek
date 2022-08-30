@@ -5,6 +5,7 @@ import ApplyParticle from "./ApplyParticle";
 import { Route, Routes, useParams } from "react-router-dom";
 import { db } from "../firebase-config";
 import { collection, orderBy, getDocs, query } from "firebase/firestore";
+import PropTypes from "prop-types";
 
 const CustomMain = styled.main`
   display: flex;
@@ -125,4 +126,14 @@ export default function Leaderboard() {
       <Route path="/:mapName" element={<LeaderBoardInfo />} />
     </Routes>
   );
+}
+
+PlayerInfo.propTypes = {
+  name: PropTypes.string,
+  time: PropTypes.string
+}
+
+LeaderBoardInfo.propTypes = {
+  mapName: PropTypes.string,
+  players: PropTypes.array
 }
