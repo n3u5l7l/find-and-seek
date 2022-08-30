@@ -1,5 +1,6 @@
-# Getting Started with Create React App
+# Overview
 
+The App is made with React and Firebase
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
