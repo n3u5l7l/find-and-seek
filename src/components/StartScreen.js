@@ -28,6 +28,7 @@ export const CustomButton = styled(MotionLink)`
   cursor: pointer;
   text-decoration: none;
   opacity: 0.7;
+  padding-left:5px; padding-right:5px;
 `;
 
 function HomeMenu() {
