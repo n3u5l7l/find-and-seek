@@ -17,7 +17,10 @@ export const MapInfo = [
         { name: "Tom", image: Tom },
         { name: "Patrick", image: Patrick },
       ],
-      creditTo: "https://www.artstation.com/chekavo"
+      creditTo: {
+        src: "https://www.artstation.com/chekavo",
+        name: "chekavo",
+      }
     },
   },
 ];
